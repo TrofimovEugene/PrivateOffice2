@@ -28,7 +28,17 @@ namespace PrivateOffice2
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<Teacher>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddRazorPages();
+
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    var googleAuthNSection = Configuration.GetSection("Authentication:Google");
+
+                    options.ClientId = googleAuthNSection["ClientId"];
+                    options.ClientSecret = googleAuthNSection["ClientSecret"];
+                });
 
             services.Configure<IdentityOptions>(options =>
             {
