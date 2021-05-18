@@ -8,6 +8,7 @@ namespace PrivateOffice2.Models
     public class Course
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string IdCourse { get; set; }
         public string NameCourse { get; set; }
         [ForeignKey("Teacher")]

@@ -29,7 +29,6 @@ namespace PrivateOffice2.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecondName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Patronymic = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -48,6 +47,31 @@ namespace PrivateOffice2.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Group",
+                columns: table => new
+                {
+                    IdGroup = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NameGroup = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Group", x => x.IdGroup);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TypeClasses",
+                columns: table => new
+                {
+                    IdTypeClasses = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TypeClass = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TypeClasses", x => x.IdTypeClasses);
                 });
 
             migrationBuilder.CreateTable(
@@ -162,11 +186,12 @@ namespace PrivateOffice2.Migrations
                 {
                     IdCourse = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     NameCourse = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdTeacher = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IdTeacher = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "date", nullable: false),
                     EndDate = table.Column<DateTime>(type: "date", nullable: false),
                     CountTime = table.Column<int>(type: "int", nullable: false),
-                    NameUniversity = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    NameUniversity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GroupIdGroup = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -176,6 +201,44 @@ namespace PrivateOffice2.Migrations
                         column: x => x.IdTeacher,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Course_Group_GroupIdGroup",
+                        column: x => x.GroupIdGroup,
+                        principalTable: "Group",
+                        principalColumn: "IdGroup",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Classes",
+                columns: table => new
+                {
+                    IdClasses = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IdTypeClasses = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IdCourse = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    NameClasses = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    DateClasses = table.Column<DateTime>(type: "date", nullable: false),
+                    DaysWeek = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Cabinet = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReplayClasses = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Classes", x => x.IdClasses);
+                    table.ForeignKey(
+                        name: "FK_Classes_Course_IdCourse",
+                        column: x => x.IdCourse,
+                        principalTable: "Course",
+                        principalColumn: "IdCourse",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Classes_TypeClasses_IdTypeClasses",
+                        column: x => x.IdTypeClasses,
+                        principalTable: "TypeClasses",
+                        principalColumn: "IdTypeClasses",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -219,6 +282,21 @@ namespace PrivateOffice2.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Classes_IdCourse",
+                table: "Classes",
+                column: "IdCourse");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Classes_IdTypeClasses",
+                table: "Classes",
+                column: "IdTypeClasses");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Course_GroupIdGroup",
+                table: "Course",
+                column: "GroupIdGroup");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Course_IdTeacher",
                 table: "Course",
                 column: "IdTeacher");
@@ -242,13 +320,22 @@ namespace PrivateOffice2.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Course");
+                name: "Classes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Course");
+
+            migrationBuilder.DropTable(
+                name: "TypeClasses");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Group");
         }
     }
 }

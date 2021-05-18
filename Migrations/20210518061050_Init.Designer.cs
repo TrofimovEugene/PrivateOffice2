@@ -10,7 +10,7 @@ using PrivateOffice2.Data;
 namespace PrivateOffice2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210514124059_Init")]
+    [Migration("20210518061050_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,9 +156,52 @@ namespace PrivateOffice2.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("PrivateOffice2.Models.Classes", b =>
+                {
+                    b.Property<string>("IdClasses")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Cabinet")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateClasses")
+                        .HasColumnType("date");
+
+                    b.Property<string>("DaysWeek")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("IdCourse")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("IdTypeClasses")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("NameClasses")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReplayClasses")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("IdClasses");
+
+                    b.HasIndex("IdCourse");
+
+                    b.HasIndex("IdTypeClasses");
+
+                    b.ToTable("Classes");
+                });
+
             modelBuilder.Entity("PrivateOffice2.Models.Course", b =>
                 {
                     b.Property<string>("IdCourse")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CountTime")
@@ -167,7 +210,11 @@ namespace PrivateOffice2.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("date");
 
+                    b.Property<int?>("GroupIdGroup")
+                        .HasColumnType("int");
+
                     b.Property<string>("IdTeacher")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("NameCourse")
@@ -181,9 +228,26 @@ namespace PrivateOffice2.Migrations
 
                     b.HasKey("IdCourse");
 
+                    b.HasIndex("GroupIdGroup");
+
                     b.HasIndex("IdTeacher");
 
                     b.ToTable("Course");
+                });
+
+            modelBuilder.Entity("PrivateOffice2.Models.Group", b =>
+                {
+                    b.Property<int>("IdGroup")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("NameGroup")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdGroup");
+
+                    b.ToTable("Group");
                 });
 
             modelBuilder.Entity("PrivateOffice2.Models.Teacher", b =>
@@ -234,9 +298,6 @@ namespace PrivateOffice2.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SecondName")
                         .HasColumnType("nvarchar(max)");
 
@@ -261,6 +322,20 @@ namespace PrivateOffice2.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("PrivateOffice2.Models.TypeClasses", b =>
+                {
+                    b.Property<string>("IdTypeClasses")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TypeClass")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdTypeClasses");
+
+                    b.ToTable("TypeClasses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -314,18 +389,57 @@ namespace PrivateOffice2.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PrivateOffice2.Models.Classes", b =>
+                {
+                    b.HasOne("PrivateOffice2.Models.Course", "Course")
+                        .WithMany("Classes")
+                        .HasForeignKey("IdCourse")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PrivateOffice2.Models.TypeClasses", "TypeClasses")
+                        .WithMany("Classes")
+                        .HasForeignKey("IdTypeClasses");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("TypeClasses");
+                });
+
             modelBuilder.Entity("PrivateOffice2.Models.Course", b =>
                 {
+                    b.HasOne("PrivateOffice2.Models.Group", "Group")
+                        .WithMany("Course")
+                        .HasForeignKey("GroupIdGroup");
+
                     b.HasOne("PrivateOffice2.Models.Teacher", "Teacher")
                         .WithMany("Course")
-                        .HasForeignKey("IdTeacher");
+                        .HasForeignKey("IdTeacher")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
 
                     b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("PrivateOffice2.Models.Course", b =>
+                {
+                    b.Navigation("Classes");
+                });
+
+            modelBuilder.Entity("PrivateOffice2.Models.Group", b =>
+                {
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("PrivateOffice2.Models.Teacher", b =>
                 {
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("PrivateOffice2.Models.TypeClasses", b =>
+                {
+                    b.Navigation("Classes");
                 });
 #pragma warning restore 612, 618
         }

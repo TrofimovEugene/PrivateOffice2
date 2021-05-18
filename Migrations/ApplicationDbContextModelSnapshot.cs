@@ -157,6 +157,7 @@ namespace PrivateOffice2.Migrations
             modelBuilder.Entity("PrivateOffice2.Models.Classes", b =>
                 {
                     b.Property<string>("IdClasses")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Cabinet")
@@ -198,6 +199,7 @@ namespace PrivateOffice2.Migrations
             modelBuilder.Entity("PrivateOffice2.Models.Course", b =>
                 {
                     b.Property<string>("IdCourse")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CountTime")
@@ -210,6 +212,7 @@ namespace PrivateOffice2.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("IdTeacher")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("NameCourse")
@@ -322,6 +325,7 @@ namespace PrivateOffice2.Migrations
             modelBuilder.Entity("PrivateOffice2.Models.TypeClasses", b =>
                 {
                     b.Property<string>("IdTypeClasses")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("TypeClass")
@@ -387,7 +391,8 @@ namespace PrivateOffice2.Migrations
                 {
                     b.HasOne("PrivateOffice2.Models.Course", "Course")
                         .WithMany("Classes")
-                        .HasForeignKey("IdCourse");
+                        .HasForeignKey("IdCourse")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PrivateOffice2.Models.TypeClasses", "TypeClasses")
                         .WithMany("Classes")
@@ -406,7 +411,9 @@ namespace PrivateOffice2.Migrations
 
                     b.HasOne("PrivateOffice2.Models.Teacher", "Teacher")
                         .WithMany("Course")
-                        .HasForeignKey("IdTeacher");
+                        .HasForeignKey("IdTeacher")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Group");
 

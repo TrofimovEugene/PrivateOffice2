@@ -7,6 +7,7 @@ namespace PrivateOffice2.Models
 	public class Classes
 	{
 		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public string IdClasses { get; set; }
 		[ForeignKey("TypeClasses")]
 		public string IdTypeClasses { get; set; }
