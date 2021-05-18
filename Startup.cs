@@ -29,6 +29,8 @@ namespace PrivateOffice2
             services.AddDefaultIdentity<Teacher>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddControllers();
+
             services.AddRazorPages();
 
             services.AddAuthentication()
@@ -98,6 +100,7 @@ namespace PrivateOffice2
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

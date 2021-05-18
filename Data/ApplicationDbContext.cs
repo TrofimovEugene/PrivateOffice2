@@ -10,5 +10,6 @@ namespace PrivateOffice2.Data
             : base(options)
         {
         }
+        public DbSet<PrivateOffice2.Models.Course> Course { get; set; }
     }
 }
