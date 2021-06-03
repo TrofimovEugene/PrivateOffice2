@@ -208,8 +208,8 @@ namespace PrivateOffice2.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("date");
 
-                    b.Property<int?>("GroupIdGroup")
-                        .HasColumnType("int");
+                    b.Property<string>("IdGroup")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("IdTeacher")
                         .IsRequired()
@@ -226,7 +226,7 @@ namespace PrivateOffice2.Migrations
 
                     b.HasKey("IdCourse");
 
-                    b.HasIndex("GroupIdGroup");
+                    b.HasIndex("IdGroup");
 
                     b.HasIndex("IdTeacher");
 
@@ -235,17 +235,16 @@ namespace PrivateOffice2.Migrations
 
             modelBuilder.Entity("PrivateOffice2.Models.Group", b =>
                 {
-                    b.Property<int>("IdGroup")
+                    b.Property<string>("IdGroup")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("NameGroup")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdGroup");
 
-                    b.ToTable("Group");
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("PrivateOffice2.Models.Teacher", b =>
@@ -406,8 +405,8 @@ namespace PrivateOffice2.Migrations
             modelBuilder.Entity("PrivateOffice2.Models.Course", b =>
                 {
                     b.HasOne("PrivateOffice2.Models.Group", "Group")
-                        .WithMany("Course")
-                        .HasForeignKey("GroupIdGroup");
+                        .WithMany("Courses")
+                        .HasForeignKey("IdGroup");
 
                     b.HasOne("PrivateOffice2.Models.Teacher", "Teacher")
                         .WithMany("Course")
@@ -427,7 +426,7 @@ namespace PrivateOffice2.Migrations
 
             modelBuilder.Entity("PrivateOffice2.Models.Group", b =>
                 {
-                    b.Navigation("Course");
+                    b.Navigation("Courses");
                 });
 
             modelBuilder.Entity("PrivateOffice2.Models.Teacher", b =>

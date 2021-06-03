@@ -13,6 +13,8 @@ namespace PrivateOffice2.Models
         public string NameCourse { get; set; }
         [ForeignKey("Teacher")]
         public string IdTeacher { get; set; }
+        [ForeignKey("Group")]
+        public string IdGroup { get; set; }
         [Column(TypeName = "date")]
         public DateTime StartDate { get; set; }
         [Column(TypeName = "date")]

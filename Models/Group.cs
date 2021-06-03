@@ -8,9 +8,9 @@ namespace PrivateOffice2.Models
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int IdGroup { get; set; }
+		public string IdGroup { get; set; }
 		public string NameGroup { get; set; }
 
-		public virtual ICollection<Course> Course { get; set; }
+		public virtual ICollection<Course> Courses { get; set; }
 	}
 }

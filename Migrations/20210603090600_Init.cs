@@ -50,16 +50,15 @@ namespace PrivateOffice2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Group",
+                name: "Groups",
                 columns: table => new
                 {
-                    IdGroup = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdGroup = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     NameGroup = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Group", x => x.IdGroup);
+                    table.PrimaryKey("PK_Groups", x => x.IdGroup);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,11 +186,11 @@ namespace PrivateOffice2.Migrations
                     IdCourse = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     NameCourse = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdTeacher = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IdGroup = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     StartDate = table.Column<DateTime>(type: "date", nullable: false),
                     EndDate = table.Column<DateTime>(type: "date", nullable: false),
                     CountTime = table.Column<int>(type: "int", nullable: false),
-                    NameUniversity = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    GroupIdGroup = table.Column<int>(type: "int", nullable: true)
+                    NameUniversity = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -203,9 +202,9 @@ namespace PrivateOffice2.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Course_Group_GroupIdGroup",
-                        column: x => x.GroupIdGroup,
-                        principalTable: "Group",
+                        name: "FK_Course_Groups_IdGroup",
+                        column: x => x.IdGroup,
+                        principalTable: "Groups",
                         principalColumn: "IdGroup",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -292,9 +291,9 @@ namespace PrivateOffice2.Migrations
                 column: "IdTypeClasses");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Course_GroupIdGroup",
+                name: "IX_Course_IdGroup",
                 table: "Course",
-                column: "GroupIdGroup");
+                column: "IdGroup");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Course_IdTeacher",
@@ -335,7 +334,7 @@ namespace PrivateOffice2.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Group");
+                name: "Groups");
         }
     }
 }
