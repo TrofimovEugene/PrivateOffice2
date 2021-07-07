@@ -28,7 +28,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			@if (true)
+			@if (Model.Groups != null)
 			{
 				@foreach (var item in Model.Groups)
 				{
@@ -36,12 +36,12 @@
 						<td style="border: solid   #0866C6 1px;">
 							@Html.DisplayFor(modelItem => item.NameGroup)
 						</td>
-						@*<td style="border: solid   #0866C6 1px;">
-							@Html.DisplayFor(modelItem => item.CountStudents)
-						</td>*@
+						<td style="border: solid   #0866C6 1px;">
+							@Html.DisplayFor(modelItem => item.Students.Count)
+						</td>
 						<td style="border: solid   #0866C6 1px;">
 							<form method="post">
-								<a asp-page="../StudentsTable/StudentsTable" asp-route-id="@item.IdGroup">Студенты</a> |
+								<a asp-page="./StudentsTable" asp-route-id="@item.IdGroup">Студенты</a> |
 								<a asp-page="../StudentsTable/EditGroup" asp-route-id="@item.IdGroup">Редактировать</a>
 							</form>
 						</td>
@@ -86,8 +86,8 @@
             (function () {
                 'use strict';
                 window.addEventListener('load', function () {
-                    var forms = document.getElementsByClassName('needs-validation');
-                    var validation = Array.prototype.filter.call(forms, function (form) {
+                    let forms = document.getElementsByClassName('needs-validation');
+                    let validation = Array.prototype.filter.call(forms, function (form) {
                         form.addEventListener('submit', function (event) {
                             if (form.checkValidity() === false) {
                                 event.preventDefault();

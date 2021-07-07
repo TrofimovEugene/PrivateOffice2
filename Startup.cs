@@ -24,10 +24,13 @@ namespace PrivateOffice2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<Teacher>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentityCore<Student>(options => options.SignIn.RequireConfirmedAccount = false)
+	            .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddControllers();
 

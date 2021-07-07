@@ -12,5 +12,6 @@ namespace PrivateOffice2.Models
 		public string NameGroup { get; set; }
 
 		public virtual ICollection<Course> Courses { get; set; }
+		public virtual ICollection<Student> Students { get; set; }
 	}
 }

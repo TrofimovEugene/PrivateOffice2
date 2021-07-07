@@ -14,6 +14,7 @@ namespace PrivateOffice2.Data
 		public DbSet<Classes> Classes { get; set; }
 		public DbSet<TypeClasses> TypeClasses { get; set; }
 		public DbSet<Group> Groups { get; set; }
+		public DbSet<Student> Students { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -45,6 +46,14 @@ namespace PrivateOffice2.Data
 				.HasMany(courses => courses.Courses)
 				.WithOne(group => group.Group)
 				.HasForeignKey(group => group.IdGroup);
+
+			/*связь один ко многим между Group and Student*/
+			modelBuilder.Entity<Group>()
+				.HasMany(student => student.Students)
+				.WithOne(group => group.Group)
+				.HasForeignKey(student => student.IdGroup)
+				.OnDelete(DeleteBehavior.Cascade);
+
 		}
 	}
 }

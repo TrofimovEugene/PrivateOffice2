@@ -1,0 +1,130 @@
+﻿@page
+@model PrivateOffice2.Pages.Groups.StudentsTableModel
+@{
+	ViewData["Title"] = "Students";
+}
+
+<div class="container-fluid mt-3">
+	<div class="form-group d-flex bd-highlight mb-3">
+		<input type="button" class="btn btn-outline-primary" style="background-color:#0866C6; color:white" onclick="history.back();" value="Назад" />
+		<button type="button" class="btn btn-outline-primary ml-auto p-2 bd-highlight" style="background-color:#0866C6; color:white" data-toggle="modal" data-target="#addStudent">
+			Добавить студента
+		</button>
+	</div>
+</div>
+
+<form method="get">
+	<table class="table table-bordered" style="border: solid   #0866C6 2px; background-color:white; width:100%">
+		<thead>
+			<tr>
+				<th style="border: solid #0866C6 2px;">Имя</th>
+				<th style="border: solid #0866C6 2px;">Фамилия</th>
+				<th style="border: solid #0866C6 2px;">Отчество</th>
+			</tr>
+		</thead>
+		<tbody>
+		@if (Model.Students != null)
+		{
+			foreach (var student in Model.Students)
+			{
+			<tr>
+				<td style="border: solid   #0866C6 1px;">
+					@Html.DisplayFor(modelItem => student.FirstName)
+				</td>
+				<td style="border: solid   #0866C6 1px;">
+					@Html.DisplayFor(modelItem => student.SecondName)
+				</td>
+				<td style="border: solid   #0866C6 1px;">
+					@Html.DisplayFor(modelItem => student.Patronymic)
+				</td>
+			</tr>	
+			}
+		}
+		</tbody>
+	</table>
+</form>
+
+<form action="" id="add_student" method="post" class="needs-validation" onsubmit="checkStudent(this);return false;" novalidate>
+	<div class="modal fade" id="addStudent" tabindex="-1" role="dialog"
+	     aria-labelledby="addStudentTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addGroupsTitle">Добавить студента</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<label for="name">Имя</label>
+					<input type="text" id="NameStudent" class="form-control" asp-for="Input.FirstName" value="" required />
+					<div class="invalid-feedback">
+						Пожалуйста введите имя
+					</div>
+				</div>
+				<div class="modal-body">
+					<label for="name">Фамилия</label>
+					<input type="text" id="SecondNameStudent" class="form-control" asp-for="Input.SecondName" value="" required />
+					<div class="invalid-feedback">
+						Пожалуйста введите фамилию
+					</div>
+				</div>
+				<div class="modal-body">
+					<label for="name">Отчество</label>
+					<input type="text" id="PatronymicStudent" class="form-control" asp-for="Input.Patronymic" value="" required />
+					<div class="invalid-feedback">
+						Пожалуйста введите отчество
+					</div>
+				</div>
+				<div class="modal-body">
+					<label asp-for="Input.Email"></label>
+					<input asp-for="Input.Email" class="form-control" />
+					<span asp-validation-for="Input.Email" class="text-danger"></span>
+				</div>
+				<div class="modal-body">
+					<label asp-for="Input.Password"></label>
+					<input asp-for="Input.Password" class="form-control" />
+					<span asp-validation-for="Input.Password" class="text-danger"></span>
+				</div>
+				<div class="modal-body">
+					<label asp-for="Input.ConfirmPassword"></label>
+					<input asp-for="Input.ConfirmPassword" class="form-control" />
+					<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+				</div>
+				<div class="modal-body">
+					<label>Группа</label>
+					<select name="idgroup" class="form-control" required>
+						@if (Model.Groups != null)
+						{
+							@foreach (var group in Model.Groups)
+							{
+								<option value="@group.IdGroup">@Html.DisplayFor(model => group.NameGroup)</option>
+							}
+						}
+					</select>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+					<input type="submit" class="btn btn-primary" value="Добавить" asp-page-handler="CreateStudent" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		(function () {
+			'use strict';
+			window.addEventListener('load', function () {
+				let forms = document.getElementsByClassName('needs-validation');
+				let validation = Array.prototype.filter.call(forms, function (form) {
+					form.addEventListener('submit', function (event) {
+						if (form.checkValidity() === false) {
+							event.preventDefault();
+							event.stopPropagation();
+						}
+						form.classList.add('was-validated');
+					}, false);
+				});
+			}, false);
+		})();
+	</script>
+</form>

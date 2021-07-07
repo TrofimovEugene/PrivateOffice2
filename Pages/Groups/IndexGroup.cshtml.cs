@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using PrivateOffice2.Models;
 
 namespace PrivateOffice2.Pages.Groups
 {
+	[Authorize]
     public class IndexGroup : PageModel
     {
         private readonly ApplicationDbContext _context;
